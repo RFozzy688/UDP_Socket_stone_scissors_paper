@@ -6,6 +6,15 @@ namespace UDP_Socket_Server
 {
     internal class Program
     {
+        Random _random = new Random();
+        List<string> _response = new List<string>();
+
+        Program()
+        {
+            _response.Add("stone");
+            _response.Add("scissors");
+            _response.Add("paper");
+        }
         static async Task Main(string[] args)
         {
             Program program = new Program();
@@ -30,11 +39,12 @@ namespace UDP_Socket_Server
                 try
                 {
                     var result = await server.ReceiveFromAsync(data, SocketFlags.None, remoteIP);
-                    var message = Encoding.UTF8.GetString(data, 0, result.ReceivedBytes);
 
-                    Console.WriteLine($"Получено {result.ReceivedBytes} байт");
-                    Console.WriteLine($"Удаленный адрес: {result.RemoteEndPoint}");
-                    Console.WriteLine(message);
+                    string message = _response[_random.Next(0, 3)];
+                    data = Encoding.UTF8.GetBytes(message);
+                    await server.SendToAsync(data, SocketFlags.None, result.RemoteEndPoint);
+
+                    Console.WriteLine(result.RemoteEndPoint + ": " + message);
                 }
                 catch (SocketException ex)
                 {
