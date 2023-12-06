@@ -5,8 +5,115 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UDP_Socket_stone_scissors_paper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="310" Width="585">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Game format" Margin="5" Grid.Row="0" Grid.Column="0">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <RadioButton IsChecked="True" Margin="5">Human - Bot</RadioButton>
+                    <RadioButton Margin="5">Bot - Bot</RadioButton>
+                    <RadioButton Margin="5">Human - Human</RadioButton>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Game" Margin="5" Grid.Row="0" Grid.Column="1">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <GroupBox Header="Action" Margin="5" Width="150">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <RadioButton IsChecked="True" Margin="5">Make a move</RadioButton>
+                            <RadioButton Margin="5">Offer a draw</RadioButton>
+                            <RadioButton Margin="5">Admit defeat</RadioButton>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Move" Margin="5" Width="200">
+                        <Grid VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <RadioButton IsChecked="True" Margin="5">Stone</RadioButton>
+                                <RadioButton Margin="5">Scissors</RadioButton>
+                                <RadioButton Margin="5">Paper</RadioButton>
+                            </StackPanel>
+
+                            <Button Height="20" Grid.Column="1" Margin="5">Send</Button>
+                        </Grid>
+                    </GroupBox>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Result games" Margin="5" Grid.Column="0">
+                <Grid VerticalAlignment="Center" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0">Result match:</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0">Games count :</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="0">Result games</TextBlock>
+                    <TextBlock Grid.Row="3" Grid.Column="0">The most popular figure:</TextBlock>
+                    <TextBlock Grid.Row="4" Grid.Column="0">The least popular figure:</TextBlock>
+
+                    <TextBlock Margin="25,0,0,0" Grid.Row="0" Grid.Column="1">n/a</TextBlock>
+                    <TextBlock Margin="25,0,0,0" Grid.Row="1" Grid.Column="1">1/5</TextBlock>
+                    <TextBlock Margin="25,0,0,0" Grid.Row="2" Grid.Column="1">2 : 3</TextBlock>
+                    <TextBlock Margin="25,0,0,0" Grid.Row="3" Grid.Column="1">stone</TextBlock>
+                    <TextBlock Margin="25,0,0,0" Grid.Row="4" Grid.Column="1">paper</TextBlock>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="Result round" Margin="5" Grid.Column="1">
+                <Grid VerticalAlignment="Center" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0">Figures in the round:</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0">Rounds count:</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="0">Result rounds:</TextBlock>
+                    <TextBlock Grid.Row="3" Grid.Column="0">Result game:</TextBlock>
+
+                    <TextBlock Margin="10,0,0,0" Grid.Row="0" Grid.Column="1">scissors - scissors</TextBlock>
+                    <TextBlock Margin="45,0,0,0" Grid.Row="1" Grid.Column="1">1 / 5</TextBlock>
+                    <TextBlock Margin="45,0,0,0" Grid.Row="2" Grid.Column="1">2 : 3</TextBlock>
+                    <TextBlock Margin="45,0,0,0" Grid.Row="3" Grid.Column="1">lose</TextBlock>
+                </Grid>
+            </GroupBox>
+        </Grid>
 
     </Grid>
 </Window>
