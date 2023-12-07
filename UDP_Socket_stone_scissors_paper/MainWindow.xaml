@@ -81,17 +81,18 @@
                     <TextBlock Grid.Row="3" Grid.Column="0">The most popular figure:</TextBlock>
                     <TextBlock Grid.Row="4" Grid.Column="0">The least popular figure:</TextBlock>
 
-                    <TextBlock Margin="25,0,0,0" Grid.Row="0" Grid.Column="1">n/a</TextBlock>
-                    <TextBlock Margin="25,0,0,0" Grid.Row="1" Grid.Column="1">1/5</TextBlock>
-                    <TextBlock Margin="25,0,0,0" Grid.Row="2" Grid.Column="1">2 : 3</TextBlock>
-                    <TextBlock Margin="25,0,0,0" Grid.Row="3" Grid.Column="1">stone</TextBlock>
-                    <TextBlock Margin="25,0,0,0" Grid.Row="4" Grid.Column="1">paper</TextBlock>
+                    <TextBlock Name="ResultMatch" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">n/a</TextBlock>
+                    <TextBlock Name="GamesCount" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1">1/5</TextBlock>
+                    <TextBlock Name="ResultGames" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">2 : 3</TextBlock>
+                    <TextBlock Name="MostPopularFigure" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1">stone</TextBlock>
+                    <TextBlock Name="LeastPopularFigure" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="1">paper</TextBlock>
                 </Grid>
             </GroupBox>
 
             <GroupBox Header="Result round" Margin="5" Grid.Column="1">
                 <Grid VerticalAlignment="Center" Margin="5">
                     <Grid.RowDefinitions>
+                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -104,13 +105,15 @@
 
                     <TextBlock Grid.Row="0" Grid.Column="0">Figures in the round:</TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="0">Rounds count:</TextBlock>
-                    <TextBlock Grid.Row="2" Grid.Column="0">Result rounds:</TextBlock>
-                    <TextBlock Grid.Row="3" Grid.Column="0">Result game:</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="0">Result current round:</TextBlock>
+                    <TextBlock Grid.Row="3" Grid.Column="0">Result rounds:</TextBlock>
+                    <TextBlock Grid.Row="4" Grid.Column="0">Result game:</TextBlock>
 
-                    <TextBlock Margin="10,0,0,0" Grid.Row="0" Grid.Column="1">scissors - scissors</TextBlock>
-                    <TextBlock Margin="45,0,0,0" Grid.Row="1" Grid.Column="1">1 / 5</TextBlock>
-                    <TextBlock Margin="45,0,0,0" Grid.Row="2" Grid.Column="1">2 : 3</TextBlock>
-                    <TextBlock Margin="45,0,0,0" Grid.Row="3" Grid.Column="1">lose</TextBlock>
+                    <TextBlock Name="Figures"  HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1">scissors - scissors</TextBlock>
+                    <TextBlock Name="RoundsCount" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1">1 / 5</TextBlock>
+                    <TextBlock Name="ResultCurrentRound" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1">win</TextBlock>
+                    <TextBlock Name="ResultRounds" HorizontalAlignment="Center" Grid.Row="3" Grid.Column="1">2 : 3</TextBlock>
+                    <TextBlock Name="ResultGame" HorizontalAlignment="Center" Grid.Row="4" Grid.Column="1">lose</TextBlock>
                 </Grid>
             </GroupBox>
         </Grid>
