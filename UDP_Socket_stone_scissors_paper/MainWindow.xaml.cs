@@ -23,6 +23,8 @@ namespace UDP_Socket_stone_scissors_paper
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = new AppVM(this);
         }
     }
 }

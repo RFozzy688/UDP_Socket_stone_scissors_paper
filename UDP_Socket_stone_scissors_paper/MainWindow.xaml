@@ -20,22 +20,22 @@
 
             <GroupBox Header="Game format" Margin="5" Grid.Row="0" Grid.Column="0">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <RadioButton IsChecked="True" Margin="5">Human - Bot</RadioButton>
-                    <RadioButton Margin="5">Bot - Bot</RadioButton>
-                    <RadioButton Margin="5">Human - Human</RadioButton>
+                    <RadioButton Command="{Binding GetGameFormat}" CommandParameter="Human - Bot" IsChecked="True" Margin="5">Human - Bot</RadioButton>
+                    <RadioButton Command="{Binding GetGameFormat}" CommandParameter="Bot - Bot" Margin="5">Bot - Bot</RadioButton>
+                    <RadioButton Command="{Binding GetGameFormat}" CommandParameter="Human - Human" Margin="5">Human - Human</RadioButton>
                 </StackPanel>
             </GroupBox>
 
             <GroupBox Header="Game" Margin="5" Grid.Row="0" Grid.Column="1">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <GroupBox Header="Action" Margin="5" Width="150">
+                    <GroupBox Header="Choice" Margin="5" Width="150">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <RadioButton IsChecked="True" Margin="5">Make a move</RadioButton>
+                            <RadioButton IsChecked="True" Margin="5">Make a step</RadioButton>
                             <RadioButton Margin="5">Offer a draw</RadioButton>
                             <RadioButton Margin="5">Admit defeat</RadioButton>
                         </StackPanel>
                     </GroupBox>
-                    <GroupBox Header="Move" Margin="5" Width="200">
+                    <GroupBox Header="Action" Margin="5" Width="200">
                         <Grid VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
@@ -43,12 +43,12 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
-                                <RadioButton IsChecked="True" Margin="5">Stone</RadioButton>
-                                <RadioButton Margin="5">Scissors</RadioButton>
-                                <RadioButton Margin="5">Paper</RadioButton>
+                                <RadioButton Command="{Binding GetAction}" CommandParameter="stone" IsChecked="True" Margin="5">Stone</RadioButton>
+                                <RadioButton Command="{Binding GetAction}" CommandParameter="scissors"  Margin="5">Scissors</RadioButton>
+                                <RadioButton Command="{Binding GetAction}" CommandParameter="paper"  Margin="5">Paper</RadioButton>
                             </StackPanel>
 
-                            <Button Height="20" Grid.Column="1" Margin="5">Send</Button>
+                            <Button Command="{Binding GetSend}" Height="20" Grid.Column="1" Margin="5">Send</Button>
                         </Grid>
                     </GroupBox>
                 </StackPanel>

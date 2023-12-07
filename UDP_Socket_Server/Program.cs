@@ -30,14 +30,13 @@ namespace UDP_Socket_Server
 
             Console.WriteLine("UDP-server started...");
 
-            byte[] data = new byte[256];
-
             EndPoint remoteIP = new IPEndPoint(IPAddress.Any, 0);
 
             while (true)
             {
                 try
                 {
+                    byte[] data = new byte[256];
                     var result = await server.ReceiveFromAsync(data, SocketFlags.None, remoteIP);
 
                     string message = _response[_random.Next(0, 3)];

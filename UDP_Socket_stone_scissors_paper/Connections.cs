@@ -14,11 +14,16 @@ namespace UDP_Socket_stone_scissors_paper
         Socket _socket;
         EndPoint _remotePoint;
 
+        //public Connections()
+        //{
+            
+        //}
+
         public Socket GetSocket {  get { return _socket; } }
         public EndPoint GetEndPoint { get { return _remotePoint; } }
         public void SocketClose()
         {
-            if (_socket.Connected)
+            if (_socket != null && _socket.Connected)
             {
                 _socket.Shutdown(SocketShutdown.Both);
                 _socket.Close();
@@ -31,7 +36,7 @@ namespace UDP_Socket_stone_scissors_paper
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             _remotePoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
         }
-        async Task<string> Send(string str)
+        public async Task<string> Send(string str)
         {
             try
             {
