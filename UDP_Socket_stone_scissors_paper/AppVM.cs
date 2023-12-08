@@ -55,7 +55,20 @@ namespace UDP_Socket_stone_scissors_paper
         public Commands GetGameFormat {  get { return _getGameFormat; } }
         async void Send(object param)
         {
-            string actionEnemy = await _connection.Send(_action);
+            string actionEnemy = string.Empty;
+            
+            if (_view.Human_Human.IsChecked == true)
+            {
+                _view.Send.IsEnabled = false;
+
+                actionEnemy = await _connection.Send("human " + _action);
+
+                _view.Send.IsEnabled = true;
+            }
+            else
+            {
+                actionEnemy = await _connection.Send(_action);
+            }
 
             _stoneScissorsPaper.CheckRound(_action, actionEnemy);
 
@@ -65,7 +78,7 @@ namespace UDP_Socket_stone_scissors_paper
         {
             _action = param as string;
         }
-        void GameFormat(object param)
+        async void GameFormat(object param)
         {
             CheckButtons();
             _stoneScissorsPaper.ResetFieldsRound();
@@ -87,7 +100,9 @@ namespace UDP_Socket_stone_scissors_paper
                     GameFormatBotBot();
                     break;
                 case "Human - Human":
-                    _connection.ConnectTo("127.0.0.1", 8081);
+                    _connection.ConnectTo("127.0.0.1", 8080);
+                    await _connection.RequestPlayer("human");
+                    PlayerAction((object)"stone");
                     break;
             }
         }
@@ -112,6 +127,11 @@ namespace UDP_Socket_stone_scissors_paper
             _view.ResultGames.Text = resultGame._resultGames;
             _view.MostPopularFigure.Text = resultGame._mostPopularfigure;
             _view.LeastPopularFigure.Text = resultGame._leastPopularfigure;
+
+            if (resultGame._resultMatch.CompareTo("N/A") != 0 && _view.Bot_Bot.IsChecked == false)
+            {
+                MessageBox.Show("Game over");
+            }
         }
         void CheckButtons()
         {

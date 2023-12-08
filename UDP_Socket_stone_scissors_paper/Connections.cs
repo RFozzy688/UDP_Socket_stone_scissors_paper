@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace UDP_Socket_stone_scissors_paper
 {
@@ -56,7 +57,24 @@ namespace UDP_Socket_stone_scissors_paper
                 MessageBox.Show(ex.Message);
             }
 
+
             return string.Empty;
+        }
+        public async Task RequestPlayer(string str)
+        {
+            string message = str;
+            byte[] data = new byte[256];
+            data = Encoding.UTF8.GetBytes(message);
+            await _socket.SendToAsync(data, SocketFlags.None, _remotePoint);
+
+            data = new byte[256];
+            var result = await _socket.ReceiveFromAsync(data, SocketFlags.None, _remotePoint);
+            message = Encoding.UTF8.GetString(data, 0, result.ReceivedBytes);
+
+            if (message.CompareTo("player connected") == 0)
+            {
+                MessageBox.Show(message);
+            }
         }
     }
 }
