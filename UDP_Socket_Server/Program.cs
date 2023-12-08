@@ -59,39 +59,12 @@ namespace UDP_Socket_Server
                     {
                         if (_players.Count != 2)
                         {
-                            _players.Add(result.RemoteEndPoint, string.Empty);
-
-                            if (_players.Count != 2) continue;
-
-                            string str = "player connected";
-                            data = new byte[256];
-                            data = Encoding.UTF8.GetBytes(str);
-
-                            foreach (var player in _players)
-                            {
-                                await server.SendToAsync(data, SocketFlags.None, player.Key);
-                            }
+                            if (await ConnectToPlayers(result, server) == false)
+                                continue;
                         }
                         else
                         {
-                            _counter++;
-
-                            _players[result.RemoteEndPoint] = temp[1];
-
-                            if (_counter == 2)
-                            {
-                                data = new byte[256];
-                                data = Encoding.UTF8.GetBytes(_players.ElementAt(0).Value);
-                                await server.SendToAsync(data, SocketFlags.None, _players.ElementAt(1).Key);
-                                Console.WriteLine(_players.ElementAt(1).Key + " " + _players.ElementAt(0).Value);
-
-                                data = new byte[256];
-                                data = Encoding.UTF8.GetBytes(_players.ElementAt(1).Value);
-                                await server.SendToAsync(data, SocketFlags.None, _players.ElementAt(0).Key);
-                                Console.WriteLine(_players.ElementAt(0).Key + " " + _players.ElementAt(1).Value);
-
-                                _counter = 0;
-                            }
+                            await SendToPlayers(result, server, temp);
                         }
                     }
                 }
@@ -100,6 +73,47 @@ namespace UDP_Socket_Server
                     Console.WriteLine(ex.Message);
                 }
                 
+            }
+        }
+        async Task<bool> ConnectToPlayers(SocketReceiveFromResult result, Socket server)
+        {
+            _players.Add(result.RemoteEndPoint, string.Empty);
+
+            if (_players.Count != 2)
+            {
+                return false;
+            }
+
+            string str = "player connected";
+            byte[] data = new byte[256];
+            data = Encoding.UTF8.GetBytes(str);
+
+            foreach (var player in _players)
+            {
+                await server.SendToAsync(data, SocketFlags.None, player.Key);
+            }
+
+            return true;
+        }
+        async Task SendToPlayers(SocketReceiveFromResult result, Socket server, string[] temp)
+        {
+            _counter++;
+
+            _players[result.RemoteEndPoint] = temp[1];
+
+            if (_counter == 2)
+            {
+                byte[] data = new byte[256];
+                data = Encoding.UTF8.GetBytes(_players.ElementAt(0).Value);
+                await server.SendToAsync(data, SocketFlags.None, _players.ElementAt(1).Key);
+                Console.WriteLine(_players.ElementAt(1).Key + " " + _players.ElementAt(0).Value);
+
+                data = new byte[256];
+                data = Encoding.UTF8.GetBytes(_players.ElementAt(1).Value);
+                await server.SendToAsync(data, SocketFlags.None, _players.ElementAt(0).Key);
+                Console.WriteLine(_players.ElementAt(0).Key + " " + _players.ElementAt(1).Value);
+
+                _counter = 0;
             }
         }
     }
