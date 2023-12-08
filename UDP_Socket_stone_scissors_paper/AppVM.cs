@@ -4,9 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Windows.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace UDP_Socket_stone_scissors_paper
 {
@@ -20,6 +22,9 @@ namespace UDP_Socket_stone_scissors_paper
         Commands _getGameFormat;
         Commands _getOfferDraw;
         Commands _getAdmitDefeat;
+        DispatcherTimer _timer;
+        Random _random = new Random();
+        int _counter = 0;
 
         string _action = "stone";
 
@@ -40,6 +45,10 @@ namespace UDP_Socket_stone_scissors_paper
             GameFormat((object)"Human - Bot");
 
             CheckButtons();
+
+            _timer = new DispatcherTimer();
+            _timer.Tick += new EventHandler(StepBot_Timer);
+            _timer.Interval = new TimeSpan(0, 0, 1);
         }
         public Commands GetSend {  get { return _getSend; } }
         public Commands GetAction {  get { return _getAction; } }
@@ -64,14 +73,18 @@ namespace UDP_Socket_stone_scissors_paper
             _stoneScissorsPaper.RoundStat();
             _stoneScissorsPaper.GameStat();
             ShowRoundStat(_stoneScissorsPaper.GetResultRound);
+            ShowGameStat(_stoneScissorsPaper.GetResultGame);
 
             string? str = param as string;
 
             switch (str)
             {
                 case "Human - Bot":
+                    _connection.ConnectTo("127.0.0.1", 8080);
+                    break;
                 case "Bot - Bot":
                     _connection.ConnectTo("127.0.0.1", 8080);
+                    GameFormatBotBot();
                     break;
                 case "Human - Human":
                     _connection.ConnectTo("127.0.0.1", 8081);
@@ -152,6 +165,26 @@ namespace UDP_Socket_stone_scissors_paper
                 _view.Paper.IsEnabled = true;
 
                 _view.Send.IsEnabled = true;
+            }
+        }
+        void GameFormatBotBot()
+        {
+            _timer.Start();
+        }
+        void StepBot_Timer(object sender, EventArgs e)
+        {
+            string[] action = { "stone", "scissors", "paper" };
+
+            _action = action[_random.Next(0, 3)];
+            Send(null);
+
+            _counter++;
+
+            if (_counter == 15) 
+            {
+                _counter = 0;
+                _timer.Stop();
+                MessageBox.Show("Game over");
             }
         }
     }
