@@ -18,6 +18,8 @@ namespace UDP_Socket_stone_scissors_paper
         Commands _getSend;
         Commands _getAction;
         Commands _getGameFormat;
+        Commands _getOfferDraw;
+        Commands _getAdmitDefeat;
 
         string _action = "stone";
 
@@ -36,6 +38,8 @@ namespace UDP_Socket_stone_scissors_paper
             _getGameFormat = new Commands(GameFormat);
 
             GameFormat((object)"Human - Bot");
+
+            CheckButtons();
         }
         public Commands GetSend {  get { return _getSend; } }
         public Commands GetAction {  get { return _getAction; } }
@@ -54,6 +58,8 @@ namespace UDP_Socket_stone_scissors_paper
         }
         void GameFormat(object param)
         {
+            CheckButtons();
+
             string? str = param as string;
 
             switch (str)
@@ -88,6 +94,60 @@ namespace UDP_Socket_stone_scissors_paper
             _view.ResultGames.Text = resultGame._resultGames;
             _view.MostPopularFigure.Text = resultGame._mostPopularfigure;
             _view.LeastPopularFigure.Text = resultGame._leastPopularfigure;
+        }
+        void CheckButtons()
+        {
+            if (_view.Human_Bot.IsChecked == true)
+            {
+                _view.MakeStep.IsChecked = true;
+                _view.MakeStep.IsEnabled = true;
+                _view.OfferDraw.IsEnabled = false;
+                _view.AdmitDefeat.IsEnabled = false;
+
+                _view.Stone.IsChecked = true;
+                _view.Scissors.IsChecked = false;
+                _view.Paper.IsChecked = false;
+
+                _view.Stone.IsEnabled = true;
+                _view.Scissors.IsEnabled = true;
+                _view.Paper.IsEnabled = true;
+
+                _view.Send.IsEnabled = true;
+            }
+            else if (_view.Bot_Bot.IsChecked == true)
+            {
+                _view.MakeStep.IsChecked = true;
+                _view.MakeStep.IsEnabled = false;
+                _view.OfferDraw.IsEnabled = false;
+                _view.AdmitDefeat.IsEnabled = false;
+
+                _view.Stone.IsChecked = false;
+                _view.Scissors.IsChecked = false;
+                _view.Paper.IsChecked = false;
+
+                _view.Stone.IsEnabled = false;
+                _view.Scissors.IsEnabled = false;
+                _view.Paper.IsEnabled = false;
+
+                _view.Send.IsEnabled = false;
+            }
+            else if (_view.Human_Human.IsChecked == true)
+            {
+                _view.MakeStep.IsChecked = true;
+                _view.MakeStep.IsEnabled = true;
+                _view.OfferDraw.IsEnabled = true;
+                _view.AdmitDefeat.IsEnabled = true;
+
+                _view.Stone.IsChecked = true;
+                _view.Scissors.IsChecked = false;
+                _view.Paper.IsChecked = false;
+
+                _view.Stone.IsEnabled = true;
+                _view.Scissors.IsEnabled = true;
+                _view.Paper.IsEnabled = true;
+
+                _view.Send.IsEnabled = true;
+            }
         }
     }
 }
