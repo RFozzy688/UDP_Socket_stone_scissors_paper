@@ -59,6 +59,11 @@ namespace UDP_Socket_stone_scissors_paper
         void GameFormat(object param)
         {
             CheckButtons();
+            _stoneScissorsPaper.ResetFieldsRound();
+            _stoneScissorsPaper.ResetFieldsGame();
+            _stoneScissorsPaper.RoundStat();
+            _stoneScissorsPaper.GameStat();
+            ShowRoundStat(_stoneScissorsPaper.GetResultRound);
 
             string? str = param as string;
 

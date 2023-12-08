@@ -128,7 +128,7 @@ namespace UDP_Socket_stone_scissors_paper
 
             RoundStat();
         }
-        void ResetFieldsRound()
+        public void ResetFieldsRound()
         {
             _figuresInRound = "N/A";
             _roundsCount = 0;
@@ -137,7 +137,7 @@ namespace UDP_Socket_stone_scissors_paper
             _playerRoundLose = 0;
             _resultCurrentRound = "N/A";
         }
-        void ResetFieldsGame()
+        public void ResetFieldsGame()
         {
             _playerGameWin = 0;
             _playerGameLose = 0;
@@ -148,7 +148,7 @@ namespace UDP_Socket_stone_scissors_paper
             _statFigures["scissors"] = 0;
             _statFigures["paper"] = 0;
         }
-        void RoundStat()
+        public void RoundStat()
         {
             _resultRound._figures = _figuresInRound;
             _resultRound._roundsCount = $"{_roundsCount} / 5";
@@ -156,7 +156,7 @@ namespace UDP_Socket_stone_scissors_paper
             _resultRound._resultRounds = $"{_playerRoundWin} : {_playerRoundLose}";
             _resultRound._resultGame = _resultGame;
         }
-        void GameStat()
+        public void GameStat()
         {
             _stResultGame._resultMatch = _resultMatch;
             _stResultGame._gamesCount = $"{_gamesCount} / 3";
