@@ -164,5 +164,46 @@ namespace UDP_Socket_stone_scissors_paper
             _stResultGame._mostPopularfigure = _statFigures.MaxBy(x => x.Value).Value != 0 ? _statFigures.MaxBy(x => x.Value).Key : "N/A";
             _stResultGame._leastPopularfigure = _statFigures.MinBy(x => x.Value).Value != 0 ? _statFigures.MinBy(x => x.Value).Key : "N/A";
         }
+        public void AdmitDraw()
+        {
+            _roundsCount = 5;
+            _resultCurrentRound = "draw";
+            _resultGame = "draw";
+            _playerRoundWin = 0;
+            _playerRoundLose = 0;
+            _figuresInRound = "stone - stone";
+            _gamesCount++;
+
+            RoundStat();
+            GameStat();
+        }
+        public void AdmitYourselfDefeat()
+        {
+            _roundsCount = 5;
+            _resultCurrentRound = "lose";
+            _resultGame = "lose";
+            _playerRoundWin = 0;
+            _playerRoundLose = 5;
+            _figuresInRound = "stone - paper";
+            _gamesCount++;
+            _playerGameLose++;
+
+            RoundStat();
+            GameStat();
+        }
+        public void AdmitEnemylfDefeat()
+        {
+            _roundsCount = 5;
+            _resultCurrentRound = "win";
+            _resultGame = "win";
+            _playerRoundWin = 5;
+            _playerRoundLose = 0;
+            _figuresInRound = "paper - stone";
+            _gamesCount++;
+            _playerGameWin++;
+
+            RoundStat();
+            GameStat();
+        }
     }
 }

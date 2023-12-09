@@ -20,8 +20,7 @@ namespace UDP_Socket_stone_scissors_paper
         Commands _getSend;
         Commands _getAction;
         Commands _getGameFormat;
-        Commands _getOfferDraw;
-        Commands _getAdmitDefeat;
+        Commands _getOffer;
         DispatcherTimer _timer;
         Random _random = new Random();
         int _counter = 0;
@@ -33,6 +32,7 @@ namespace UDP_Socket_stone_scissors_paper
             _view = mainWindow;
 
             _connection = new Connections();
+            _connection.ResponceEvent += Responce;
             _stoneScissorsPaper = new StoneScissorsPaper();
 
             ShowRoundStat(_stoneScissorsPaper.GetResultRound);
@@ -41,6 +41,7 @@ namespace UDP_Socket_stone_scissors_paper
             _getSend = new Commands(Send);
             _getAction = new Commands(PlayerAction);
             _getGameFormat = new Commands(GameFormat);
+            _getOffer = new Commands(Offer);
 
             GameFormat((object)"Human - Bot");
 
@@ -55,6 +56,7 @@ namespace UDP_Socket_stone_scissors_paper
         public Commands GetSend {  get { return _getSend; } }
         public Commands GetAction {  get { return _getAction; } }
         public Commands GetGameFormat {  get { return _getGameFormat; } }
+        public Commands GetOffer {  get { return _getOffer; } }
         async void Send(object param)
         {
             string actionEnemy = string.Empty;
@@ -105,7 +107,8 @@ namespace UDP_Socket_stone_scissors_paper
                     break;
                 case "Human - Human":
                     CreateWndConnectToPlayer();
-                    _connection.ConnectTo("127.0.0.1", GetLocalPort, GetRemotePort);
+                    _connection.ConnectTo("127.0.0.1", GetLocalPort, GetRemotePort, GetLocalPort + 2, GetRemotePort + 2);
+                    await _connection.ReceiveMessageAsync_2();
                     PlayerAction((object)"stone");
                     break;
             }
@@ -215,6 +218,41 @@ namespace UDP_Socket_stone_scissors_paper
         {
             ConnectToPlayer connectToPlayer = new ConnectToPlayer(this);
             connectToPlayer.ShowDialog();
+        }
+        async void Responce(string str)
+        {
+            if (str.CompareTo("ok draw") == 0)
+            {
+                _stoneScissorsPaper.AdmitDraw();
+                ShowRoundStat(_stoneScissorsPaper.GetResultRound);
+            }
+            else if (str.CompareTo("ok defeat") == 0)
+            {
+                _stoneScissorsPaper.AdmitEnemylfDefeat();
+                ShowRoundStat(_stoneScissorsPaper.GetResultRound);
+            }
+            else if (MessageBox.Show("Admit " + str, "Offer", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+            {
+                switch (str)
+                {
+                    case "draw":
+                        _stoneScissorsPaper.AdmitDraw();
+                        ShowRoundStat(_stoneScissorsPaper.GetResultRound);
+                        await _connection.SendMessageAsync_2("ok draw");
+                        break;
+                    case "defeat":
+                        _stoneScissorsPaper.AdmitYourselfDefeat();
+                        ShowRoundStat(_stoneScissorsPaper.GetResultRound);
+                        await _connection.SendMessageAsync_2("ok defeat");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        async void Offer(object param)
+        {
+            await _connection.SendMessageAsync_2(param as string);
         }
     }
 }

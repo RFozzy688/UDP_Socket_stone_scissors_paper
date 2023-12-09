@@ -10,16 +10,19 @@ using System.Windows.Markup;
 
 namespace UDP_Socket_stone_scissors_paper
 {
+    public delegate void ResponceDelegat(string str);
     public class Connections
     {
         Socket _socketSend;
         Socket _socketReceive;
         EndPoint _remotePoint;
         EndPoint _localPoint;
+        Socket _socketSend_2;
+        Socket _socketReceive_2;
+        EndPoint _remotePoint_2;
+        EndPoint _localPoint_2;
+        public event ResponceDelegat ResponceEvent = null;
 
-        //public Socket GetSocket {  get { return _socket; } }
-        public EndPoint GetRemotePoint { get { return _remotePoint; } }
-        public EndPoint GetLocalPoint { get { return _localPoint; } }
         public void SocketClose()
         {
             if (_socketSend != null && _socketSend.Connected)
@@ -48,7 +51,7 @@ namespace UDP_Socket_stone_scissors_paper
                 MessageBox.Show(ex.Message);
             }
         }
-        public void ConnectTo(string ipAddress, int localPort, int remotePort)
+        public void ConnectTo(string ipAddress, int localPort, int remotePort, int localPort_2, int remotePort_2)
         {
             try
             {
@@ -61,6 +64,14 @@ namespace UDP_Socket_stone_scissors_paper
                 _localPoint = new IPEndPoint(IPAddress.Parse(ipAddress), localPort);
 
                 _socketReceive.Bind(_localPoint);
+
+                _socketSend_2 = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                _socketReceive_2 = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+                _remotePoint_2 = new IPEndPoint(IPAddress.Parse(ipAddress), remotePort_2);
+                _localPoint_2 = new IPEndPoint(IPAddress.Parse(ipAddress), localPort_2);
+
+                _socketReceive_2.Bind(_localPoint_2);
             }
             catch (SocketException ex)
             {
@@ -89,28 +100,6 @@ namespace UDP_Socket_stone_scissors_paper
 
             return string.Empty;
         }
-        //public async Task<string> SendToPlayer(string str)
-        //{
-        //    try
-        //    {
-        //        string message = str;
-        //        byte[] data = new byte[256];
-        //        data = Encoding.UTF8.GetBytes(message);
-        //        await _socket.SendToAsync(data, SocketFlags.None, _remotePoint);
-
-        //        data = new byte[256];
-        //        var result = await _socket.ReceiveFromAsync(data, SocketFlags.None, _localPoint);
-        //        message = Encoding.UTF8.GetString(data, 0, result.ReceivedBytes);
-
-        //        return message;
-        //    }
-        //    catch (SocketException ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-
-        //    return string.Empty;
-        //}
         public async Task<string> ReceiveMessageAsync()
         {
             byte[] data = new byte[256];
@@ -125,6 +114,31 @@ namespace UDP_Socket_stone_scissors_paper
             byte[] data = new byte[256];
             data = Encoding.UTF8.GetBytes(message);
             await _socketSend.SendToAsync(data, SocketFlags.None, _remotePoint);
+        }
+        public async Task ReceiveMessageAsync_2()
+        {
+            while (true)
+            {
+                byte[] data = new byte[256];
+                var result = await _socketReceive_2.ReceiveFromAsync(data, SocketFlags.None, _localPoint_2);
+                string message = Encoding.UTF8.GetString(data, 0, result.ReceivedBytes);
+
+                Responce(message);
+            }
+        }
+        public async Task SendMessageAsync_2(string str)
+        {
+            string message = str;
+            byte[] data = new byte[256];
+            data = Encoding.UTF8.GetBytes(message);
+            await _socketSend_2.SendToAsync(data, SocketFlags.None, _remotePoint_2);
+        }
+        void Responce(string str)
+        {
+            if (ResponceEvent != null)
+            {
+                ResponceEvent(str);
+            }
         }
     }
 }

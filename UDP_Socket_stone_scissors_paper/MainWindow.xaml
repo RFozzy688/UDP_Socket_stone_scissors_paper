@@ -31,8 +31,8 @@
                     <GroupBox Header="Choice" Margin="5" Width="150">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                             <RadioButton Name="MakeStep" IsChecked="True" Margin="5">Make a step</RadioButton>
-                            <RadioButton Name="OfferDraw" Margin="5">Offer a draw</RadioButton>
-                            <RadioButton Name="AdmitDefeat" Margin="5">Admit defeat</RadioButton>
+                            <RadioButton Command="{Binding GetOffer}" CommandParameter="draw" Name="OfferDraw" Margin="5">Offer a draw</RadioButton>
+                            <RadioButton Command="{Binding GetOffer}" CommandParameter="defeat" Name="AdmitDefeat" Margin="5">Admit defeat</RadioButton>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Action" Margin="5" Width="200">
