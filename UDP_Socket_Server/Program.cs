@@ -45,75 +45,17 @@ namespace UDP_Socket_Server
                     var result = await server.ReceiveFromAsync(data, SocketFlags.None, remoteIP);
                     message = Encoding.UTF8.GetString(data, 0, result.ReceivedBytes);
 
-                    string[] temp = message.Split(' ');
+                    message = _response[_random.Next(0, 3)];
+                    data = Encoding.UTF8.GetBytes(message);
+                    await server.SendToAsync(data, SocketFlags.None, result.RemoteEndPoint);
 
-                    if (temp[0].CompareTo("human") != 0)
-                    {
-                        message = _response[_random.Next(0, 3)];
-                        data = Encoding.UTF8.GetBytes(message);
-                        await server.SendToAsync(data, SocketFlags.None, result.RemoteEndPoint);
-
-                        Console.WriteLine(result.RemoteEndPoint + ": " + message);
-                    }
-                    else
-                    {
-                        if (_players.Count != 2)
-                        {
-                            if (await ConnectToPlayers(result, server) == false)
-                                continue;
-                        }
-                        else
-                        {
-                            await SendToPlayers(result, server, temp);
-                        }
-                    }
+                    Console.WriteLine(result.RemoteEndPoint + ": " + message);
                 }
                 catch (SocketException ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
                 
-            }
-        }
-        async Task<bool> ConnectToPlayers(SocketReceiveFromResult result, Socket server)
-        {
-            _players.Add(result.RemoteEndPoint, string.Empty);
-
-            if (_players.Count != 2)
-            {
-                return false;
-            }
-
-            string str = "player connected";
-            byte[] data = new byte[256];
-            data = Encoding.UTF8.GetBytes(str);
-
-            foreach (var player in _players)
-            {
-                await server.SendToAsync(data, SocketFlags.None, player.Key);
-            }
-
-            return true;
-        }
-        async Task SendToPlayers(SocketReceiveFromResult result, Socket server, string[] temp)
-        {
-            _counter++;
-
-            _players[result.RemoteEndPoint] = temp[1];
-
-            if (_counter == 2)
-            {
-                byte[] data = new byte[256];
-                data = Encoding.UTF8.GetBytes(_players.ElementAt(0).Value);
-                await server.SendToAsync(data, SocketFlags.None, _players.ElementAt(1).Key);
-                Console.WriteLine(_players.ElementAt(1).Key + " " + _players.ElementAt(0).Value);
-
-                data = new byte[256];
-                data = Encoding.UTF8.GetBytes(_players.ElementAt(1).Value);
-                await server.SendToAsync(data, SocketFlags.None, _players.ElementAt(0).Key);
-                Console.WriteLine(_players.ElementAt(0).Key + " " + _players.ElementAt(1).Value);
-
-                _counter = 0;
             }
         }
     }

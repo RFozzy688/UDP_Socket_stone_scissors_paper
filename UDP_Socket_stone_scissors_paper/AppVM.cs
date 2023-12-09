@@ -50,6 +50,8 @@ namespace UDP_Socket_stone_scissors_paper
             _timer.Tick += new EventHandler(StepBot_Timer);
             _timer.Interval = new TimeSpan(0, 0, 1);
         }
+        public int GetLocalPort {  get; set; }
+        public int GetRemotePort {  get; set; }
         public Commands GetSend {  get { return _getSend; } }
         public Commands GetAction {  get { return _getAction; } }
         public Commands GetGameFormat {  get { return _getGameFormat; } }
@@ -61,7 +63,9 @@ namespace UDP_Socket_stone_scissors_paper
             {
                 _view.Send.IsEnabled = false;
 
-                actionEnemy = await _connection.Send("human " + _action);
+                await _connection.SendMessageAsync(_action);
+
+                actionEnemy = await _connection.ReceiveMessageAsync();
 
                 _view.Send.IsEnabled = true;
             }
@@ -100,8 +104,8 @@ namespace UDP_Socket_stone_scissors_paper
                     GameFormatBotBot();
                     break;
                 case "Human - Human":
-                    _connection.ConnectTo("127.0.0.1", 8080);
-                    await _connection.RequestPlayer("human");
+                    CreateWndConnectToPlayer();
+                    _connection.ConnectTo("127.0.0.1", GetLocalPort, GetRemotePort);
                     PlayerAction((object)"stone");
                     break;
             }
@@ -206,6 +210,11 @@ namespace UDP_Socket_stone_scissors_paper
                 _timer.Stop();
                 MessageBox.Show("Game over");
             }
+        }
+        void CreateWndConnectToPlayer()
+        {
+            ConnectToPlayer connectToPlayer = new ConnectToPlayer(this);
+            connectToPlayer.ShowDialog();
         }
     }
 }
